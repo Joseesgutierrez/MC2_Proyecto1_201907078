@@ -22,7 +22,7 @@ class TorresDeHanoi:
         for i in range(3):
             x0 = 100 + i * 200
             x1 = x0 + 20
-            self.canvas.create_rectangle(x0, 100, x1, 300, fill="red")
+            self.canvas.create_rectangle(x0, 100, x1, 300, fill="black")
         
         # Dibujar discos
         for i, poste in enumerate(self.postes):
@@ -46,12 +46,28 @@ class TorresDeHanoi:
         
     def mover_torres(self, n, origen, destino, auxiliar, movimientos):
         if n == 1:
-            movimientos.append(f"Mover disco desde poste {origen + 1} hasta poste {destino + 1}")
+            movimientos.append(f"Mover disco desde {origen + 1} hasta {destino + 1}")
             self.mover_disco(origen, destino)
+            if self.postes[2] == list(range(self.num_discos, 0, -1)):
+                messagebox.showinfo("¡Éxito!", "¡Has completado el juego de las Torres de Hanoi!")
         else:
             self.mover_torres(n-1, origen, auxiliar, destino, movimientos)
-            movimientos.append(f"Mover disco desde poste {origen + 1} hasta poste {destino + 1}")
+            movimientos.append(f"Mover disco desde {origen + 1} hasta {destino + 1}")
             self.mover_disco(origen, destino)
+            if self.postes[2] == list(range(self.num_discos, 0, -1)):
+                messagebox.showinfo("¡Éxito!", "¡Has completado el juego de las Torres de Hanoi!")
             self.mover_torres(n-1, auxiliar, destino, origen, movimientos)
+
+    def validar_movimiento(self, origen, destino):
+        if not self.postes[origen]:
+            # No hay discos en el poste de origen
+            return False
+        elif self.postes[destino] and self.postes[origen][-1] > self.postes[destino][-1]:
+            # El disco en el poste de origen es más grande que el disco en el poste de destino
+            return False
+        else:
+            # El movimiento es válido
+            return True
+
 
         
