@@ -2,10 +2,16 @@ from tkinter import messagebox
 
 
 class TorresDeHanoi:
-    def __init__(self, canvas):
+    def __init__(self, canvas, num_discos):
         self.canvas = canvas
-        self.postes = [[7,6,5,4,3, 2, 1], [], []]  # Discos en los postes, representados por números
+        self.postes = [list(range(num_discos, 0, -1)), [], []]  # Inicializar con la cantidad de discos deseada
         self.dibujar_postes()  # Dibujar postes y discos
+        self.num_discos = num_discos  # Almacenar la cantidad de discos
+
+    def resolver_juego(self):
+        movimientos = []
+        self.mover_torres(self.num_discos, 0, 2, 1, movimientos)
+        return movimientos
     
     def dibujar_postes(self):
         # Código para dibujar postes y discos en el canvas
@@ -37,4 +43,14 @@ class TorresDeHanoi:
             disco = self.postes[desde].pop()
             self.postes[hacia].append(disco)
             return True
+        
+    def mover_torres(self, n, origen, destino, auxiliar, movimientos):
+        if n == 1:
+            movimientos.append(f"Mover disco desde poste {origen + 1} hasta poste {destino + 1}")
+            self.mover_disco(origen, destino)
+        else:
+            self.mover_torres(n-1, origen, auxiliar, destino, movimientos)
+            movimientos.append(f"Mover disco desde poste {origen + 1} hasta poste {destino + 1}")
+            self.mover_disco(origen, destino)
+            self.mover_torres(n-1, auxiliar, destino, origen, movimientos)
         
