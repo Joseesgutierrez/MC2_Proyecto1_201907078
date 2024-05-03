@@ -26,7 +26,7 @@ class GUI:
         if not self.juego:
             self.inicializar_juego()
         movimientos = self.juego.resolver_juego()
-        self.mostrar_movimientos(movimientos)
+        self.animar_movimientos(movimientos)
 
     def inicializar_juego(self):
         num_discos = self.solicitar_cantidad_discos()
@@ -49,12 +49,23 @@ class GUI:
                     self.juego.dibujar_postes()  # Actualizar la vista
                     self.poste_seleccionado = None  # Reiniciar el poste seleccionado
 
-    def mostrar_movimientos(self, movimientos):
+    def animar_movimientos(self, movimientos):
         if movimientos:
-            messagebox.showinfo("Movimientos", "\n".join(movimientos))
+            self.animar_paso(movimientos, 0)
         else:
             messagebox.showinfo("Movimientos", "No hay movimientos necesarios.")
-                    
+
+    def animar_paso(self, movimientos, index):
+        if index < len(movimientos):
+            movimiento = movimientos[index]
+            partes = movimiento.split(" ")
+            origen, destino = int(partes[4])-1, int(partes[7])-1
+            self.juego.mover_disco(origen, destino)
+            self.juego.dibujar_postes()
+            self.master.after(1000, self.animar_paso, movimientos, index + 1)
+        else:
+            messagebox.showinfo("Movimientos", "Todos los movimientos han sido animados.")
+
 def main():
     root = tk.Tk()
     app = GUI(root)
