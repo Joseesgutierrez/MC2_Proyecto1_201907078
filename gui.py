@@ -62,7 +62,7 @@ class GUI:
             origen, destino = int(partes[4])-1, int(partes[7])-1
             self.juego.mover_disco(origen, destino)
             self.juego.dibujar_postes()
-            self.master.after(1000, self.animar_paso, movimientos, index + 1)
+            self.master.after(500, self.animar_paso, movimientos, index + 1)  # Llamar a animar_paso después de 1000 ms
         else:
             messagebox.showinfo("Movimientos", "Todos los movimientos han sido animados.")
 
