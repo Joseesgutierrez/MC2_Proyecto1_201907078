@@ -49,7 +49,6 @@ class GUI:
             movimientos = self.juego.resolver_juego()  # Resolver el juego
             self.animar_movimientos(movimientos)  # Animar los movimientos
 
-
     def inicializar_juego(self):
         num_discos = self.solicitar_cantidad_discos()
         if num_discos:
@@ -77,9 +76,6 @@ class GUI:
                     messagebox.showerror("Error", "No se puede mover un disco más grande sobre uno más pequeño.")
                 self.poste_seleccionado = None  # Reiniciar el poste seleccionado
 
-
-
-
     def animar_movimientos(self, movimientos):
         if movimientos:
             self.animar_paso(movimientos, 0)
@@ -91,12 +87,12 @@ class GUI:
         if index < len(movimientos):
             movimiento = movimientos[index]
             partes = movimiento.split(" ")
-            origen, destino = int(partes[4])-1, int(partes[7])-1
+            origen, destino = int(partes[3])-1, int(partes[5])-1
             self.juego.mover_disco(origen, destino)
             self.juego.dibujar_postes()
-            self.master.after(200, self.animar_paso, movimientos, index + 1)  # Llamar a animar_paso después de 200 ms
+            self.master.after(180, self.animar_paso, movimientos, index + 1)  # Llamar a animar_paso después de 100 ms
         else:
-            messagebox.showinfo("Movimientos", "Todos los movimientos han sido animados.")
+            messagebox.showinfo("¡Éxito!", "¡Has completado el juego de las Torres de Hanoi!")
 
 
 
