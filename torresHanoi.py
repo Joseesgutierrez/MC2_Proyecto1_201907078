@@ -1,5 +1,3 @@
-from tkinter import messagebox
-
 
 class TorresDeHanoi:
     def __init__(self, canvas, num_discos):
@@ -7,6 +5,7 @@ class TorresDeHanoi:
         self.postes = [list(range(num_discos, 0, -1)), [], []]  # Inicializar con la cantidad de discos deseada
         self.dibujar_postes()  # Dibujar postes y discos
         self.num_discos = num_discos  # Almacenar la cantidad de discos
+
 
     def resolver_juego(self):
         movimientos = []
@@ -34,28 +33,23 @@ class TorresDeHanoi:
     
     def mover_disco(self, desde, hacia):
         if not self.postes[desde]:
-            #print("No hay discos en el poste de origen.")
             return False
         elif self.postes[hacia] and self.postes[desde][-1] > self.postes[hacia][-1]:
-            #messagebox.showerror("Error", "No se puede mover un disco más grande sobre uno más pequeño.")
             return False
         else:
             disco = self.postes[desde].pop()
             self.postes[hacia].append(disco)
+            self.dibujar_postes()
             return True
         
     def mover_torres(self, n, origen, destino, auxiliar, movimientos):
-        if n == 1:
-            movimientos.append(f"Mover disco desde {origen + 1} hasta {destino + 1}")
+        if n == 0:
+            movimientos.append(f"Mover disco desde {origen} hasta {destino}")
             self.mover_disco(origen, destino)
-            if self.postes[2] == list(range(self.num_discos, 0, -1)):
-                messagebox.showinfo("¡Éxito!", "¡Has completado el juego de las Torres de Hanoi!")
         else:
             self.mover_torres(n-1, origen, auxiliar, destino, movimientos)
-            movimientos.append(f"Mover disco desde {origen + 1} hasta {destino + 1}")
+            movimientos.append(f"Mover disco desde {origen} hasta {destino}")
             self.mover_disco(origen, destino)
-            if self.postes[2] == list(range(self.num_discos, 0, -1)):
-                messagebox.showinfo("¡Éxito!", "¡Has completado el juego de las Torres de Hanoi!")
             self.mover_torres(n-1, auxiliar, destino, origen, movimientos)
 
     def validar_movimiento(self, origen, destino):
